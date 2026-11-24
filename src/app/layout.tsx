@@ -1,10 +1,25 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+const description =
+  "Portfolio of Abdallah Anwar, a full-stack developer working with React, Next.js and Node.js. Projects, skills, and contact details, in English and Arabic.";
+
 export const metadata: Metadata = {
+  metadataBase: new URL("https://portfolio-abdallah-anwar.vercel.app"),
   title: "Abdallah Anwar | Full-stack developer",
-  description:
-    "Portfolio of Abdallah Anwar, a full-stack developer working with React, Next.js and Node.js. Projects, skills, and contact details, in English and Arabic.",
+  description,
+  openGraph: {
+    type: "website",
+    title: "Abdallah Anwar | Full-stack developer",
+    description,
+    images: [{ url: "/me.webp", width: 640, height: 640, alt: "Abdallah Anwar" }],
+  },
+  twitter: {
+    card: "summary",
+    title: "Abdallah Anwar | Full-stack developer",
+    description,
+    images: ["/me.webp"],
+  },
 };
 
 // Runs before first paint: saved language (or Arabic for Arabic browsers), saved theme (dark by default),
