@@ -1,0 +1,376 @@
+@import "tailwindcss";
+@import "@fontsource-variable/readex-pro";
+
+/* Dark is the default. The inline script in layout.tsx sets data-theme before paint. */
+:root {
+  --canvas: #050a1c;
+  --surface: #0d1530;
+  --fg: #f1f5f9;
+  --muted: #9aa8c2;
+  --accent: #22d3ee;
+  --accent2: #3b82f6;
+  --accent-ink: #ffffff;
+  --line: rgb(148 163 184 / 0.2);
+  --grad: linear-gradient(135deg, #22d3ee, #3b82f6);
+  --grad-btn: linear-gradient(135deg, #0e9ec2, #2563eb);
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --canvas: #f6f9fc;
+  --surface: #ffffff;
+  --fg: #0f172a;
+  --muted: #526078;
+  --accent: #0891b2;
+  --accent2: #2563eb;
+  --line: rgb(15 23 42 / 0.13);
+  --grad: linear-gradient(135deg, #0891b2, #2563eb);
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent2: var(--accent2);
+  --color-accent-ink: var(--accent-ink);
+  --color-line: var(--line);
+  --font-sans: "Readex Pro Variable", ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+body {
+  background: var(--canvas);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+html[lang="ar"] body {
+  line-height: 1.95;
+}
+
+/* Bilingual content: both languages are in the HTML, the <html lang> picks one.
+   No flash, no hydration mismatch. */
+html[lang="ar"] [data-l="en"],
+html:not([lang="ar"]) [data-l="ar"] {
+  display: none;
+}
+
+/* Letter-spacing breaks Arabic joining, so tight tracking is English-only. */
+.tight {
+  letter-spacing: -0.03em;
+}
+html[lang="ar"] .tight {
+  letter-spacing: 0;
+}
+
+/* The header is sticky (4.5rem tall), so anchors land below it. */
+[id] {
+  scroll-margin-top: 5.5rem;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+::selection {
+  background: var(--accent2);
+  color: #fff;
+}
+
+.link-line {
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+
+/* ---------- Brand gradient ---------- */
+.grad-text {
+  background-image: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.btn-grad {
+  background-image: var(--grad-btn);
+  color: #fff;
+  box-shadow: 0 10px 24px -10px color-mix(in srgb, var(--accent2) 75%, transparent);
+  transition:
+    translate 0.2s,
+    box-shadow 0.2s,
+    filter 0.2s;
+}
+a.btn-grad:hover,
+button.btn-grad:hover {
+  translate: 0 -2px;
+  filter: brightness(1.1);
+}
+
+.title-bar {
+  background-image: var(--grad);
+}
+
+/* ---------- Hover effects ---------- */
+.card-hover {
+  transition:
+    translate 0.3s,
+    border-color 0.3s,
+    box-shadow 0.3s;
+}
+.card-hover:hover {
+  translate: 0 -6px;
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  box-shadow: 0 22px 44px -22px color-mix(in srgb, var(--accent) 50%, transparent);
+}
+
+.chip-hover {
+  transition:
+    translate 0.2s,
+    border-color 0.2s;
+}
+.chip-hover:hover {
+  translate: 0 -3px;
+  border-color: var(--accent);
+}
+
+.social-btn {
+  transition:
+    translate 0.2s,
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+}
+.social-btn:hover {
+  translate: 0 -3px;
+  background-image: var(--grad-btn);
+  color: #fff;
+  border-color: transparent;
+}
+
+.skill-line {
+  width: 3rem;
+  background-image: linear-gradient(90deg, var(--accent), var(--accent2));
+  transition: width 0.5s;
+}
+.card-hover:hover .skill-line {
+  width: 100%;
+}
+
+/* ---------- Header ---------- */
+.nav-line {
+  position: absolute;
+  inset-inline: 1rem;
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px;
+  background-image: var(--grad);
+  transform: scaleX(0);
+  transition: transform 0.25s;
+}
+.nav-link:hover .nav-line,
+.nav-line[data-on] {
+  transform: scaleX(1);
+}
+
+/* Theme switch: the knob slides, and shows a moon (dark) or a sun (light). */
+.switch-knob {
+  inset-inline-start: 3px;
+  transition: inset-inline-start 0.25s;
+}
+:root[data-theme="light"] .switch-knob {
+  inset-inline-start: calc(100% - 27px);
+}
+.k-sun {
+  display: none;
+}
+:root[data-theme="light"] .k-sun {
+  display: block;
+}
+:root[data-theme="light"] .k-moon {
+  display: none;
+}
+
+/* ---------- Hero ---------- */
+.hero-bg {
+  background-image:
+    radial-gradient(60% 50% at 80% 30%, color-mix(in srgb, var(--accent2) 20%, transparent), transparent 70%),
+    radial-gradient(40% 40% at 8% 85%, color-mix(in srgb, var(--accent) 11%, transparent), transparent 70%),
+    radial-gradient(color-mix(in srgb, var(--fg) 9%, transparent) 1px, transparent 1px);
+  background-size:
+    auto,
+    auto,
+    28px 28px;
+}
+
+.photo-ring {
+  background-image: var(--grad);
+  box-shadow: 0 0 70px -12px color-mix(in srgb, var(--accent) 65%, transparent);
+}
+
+@keyframes spin-slow {
+  to {
+    rotate: 360deg;
+  }
+}
+.ring-dashed {
+  animation: spin-slow 70s linear infinite;
+}
+
+/* Tech chips around the photo drift up and down a little. */
+@keyframes float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -14px;
+  }
+}
+.float {
+  animation: float 4.5s ease-in-out infinite;
+}
+
+@keyframes ping-k {
+  75%,
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+.ping {
+  animation: ping-k 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.mouse {
+  position: relative;
+  display: block;
+  width: 1.6rem;
+  height: 2.5rem;
+  border: 2px solid var(--muted);
+  border-radius: 999px;
+}
+@keyframes wheel {
+  0% {
+    opacity: 1;
+    translate: -50% 0;
+  }
+  70% {
+    opacity: 0;
+    translate: -50% 14px;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.mouse-dot {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  width: 4px;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--accent);
+  translate: -50% 0;
+  animation: wheel 1.6s ease-in-out infinite;
+}
+
+/* ---------- Timeline ---------- */
+.timeline::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 1.1rem;
+  width: 2px;
+  background-image: linear-gradient(var(--accent), var(--accent2));
+  opacity: 0.55;
+}
+.timeline-dot {
+  inset-inline-start: 0.6rem;
+}
+@media (min-width: 768px) {
+  .timeline::before {
+    inset-inline-start: 50%;
+    translate: -50% 0;
+  }
+  html[dir="rtl"] .timeline::before {
+    translate: 50% 0;
+  }
+  .timeline-dot {
+    inset-inline-start: 50%;
+    translate: -50% 0;
+  }
+  html[dir="rtl"] .timeline-dot {
+    translate: 50% 0;
+  }
+}
+
+/* ---------- Scroll reveal ----------
+   Each block "loads in" as it enters the viewport. Only active when the `js` class is set
+   (script ran, motion allowed), so content is never hidden without JavaScript.
+   <Reveal> sets data-in once the block is visible. */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(36px);
+  filter: blur(10px);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0ms),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0ms),
+    filter 0.8s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0ms);
+}
+.js [data-reveal="zoom"] {
+  transform: scale(0.9);
+}
+.js [data-reveal="fade"] {
+  transform: none;
+}
+.js [data-reveal][data-in] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* The bar under each section title draws itself. */
+.js [data-reveal] .title-bar {
+  transform: scaleX(0);
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.35s;
+}
+.js [data-reveal][data-in] .title-bar {
+  transform: scaleX(1);
+}
+
+/* Project cards re-enter when the filter changes. */
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.card-in {
+  animation: card-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
